@@ -1,4 +1,10 @@
+using Microsoft.EntityFrameworkCore;
+using ReBottle.Models.Data;
+
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddDbContext<ReBottleContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Add services to the container.
 
