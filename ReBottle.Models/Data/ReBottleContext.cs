@@ -27,21 +27,24 @@ namespace ReBottle.Models.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            //One-to-Many: User -> RecyclingRecord
-            modelBuilder.Entity<RecyclingRecord>().HasMany(u => u.Users).WithOne(r => r.RecyclingRecord)
-                .HasForeignKey(u => u.RecyclingRecordId);
+            // One-to-Many: User -> RecyclingRecords
+            modelBuilder.Entity<RecyclingRecord>()
+                .HasOne(r => r.User)               
+                .WithMany(u => u.RecyclingRecords) 
+                .HasForeignKey(r => r.UserId);     
 
-            //One-to-Many: RecyclingRecords -> OrderStatus
-            modelBuilder.Entity<RecyclingRecord>().HasOne(r => r.OrderStatus).WithMany(s => s.RecyclingRecords)
+            // One-to-Many: RecyclingRecords -> OrderStatus
+            modelBuilder.Entity<RecyclingRecord>()
+                .HasOne(r => r.OrderStatus)
+                .WithMany(s => s.RecyclingRecords)
                 .HasForeignKey(r => r.OrderStatusId);
 
-            //One-to-Many: RecyclingRecords -> Location
-            modelBuilder.Entity<RecyclingRecord>().HasOne(r => r.Location).WithMany(s => s.RecyclingRecords)
+            // One-to-Many: RecyclingRecords -> Location
+            modelBuilder.Entity<RecyclingRecord>()
+                .HasOne(r => r.Location)
+                .WithMany(s => s.RecyclingRecords)
                 .HasForeignKey(r => r.LocationId);
-
-            //One-to-Many: Location -> Schedule
-            // TO DO LATER
-
         }
+
     }
 }

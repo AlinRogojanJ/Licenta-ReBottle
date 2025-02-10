@@ -103,6 +103,8 @@ namespace ReBottle.Models.Migrations
 
                     b.HasIndex("OrderStatusId");
 
+                    b.HasIndex("UserId");
+
                     b.ToTable("RecyclingRecords");
                 });
 
@@ -119,6 +121,9 @@ namespace ReBottle.Models.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -126,9 +131,6 @@ namespace ReBottle.Models.Migrations
                     b.Property<string>("Phone")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("RecyclingRecordId")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("Updated")
                         .HasColumnType("datetime2");
@@ -138,8 +140,6 @@ namespace ReBottle.Models.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("UserId");
-
-                    b.HasIndex("RecyclingRecordId");
 
                     b.ToTable("Users");
                 });
@@ -158,20 +158,17 @@ namespace ReBottle.Models.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Location");
-
-                    b.Navigation("OrderStatus");
-                });
-
-            modelBuilder.Entity("ReBottle.Models.User", b =>
-                {
-                    b.HasOne("ReBottle.Models.RecyclingRecord", "RecyclingRecord")
-                        .WithMany("Users")
-                        .HasForeignKey("RecyclingRecordId")
+                    b.HasOne("ReBottle.Models.User", "User")
+                        .WithMany("RecyclingRecords")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("RecyclingRecord");
+                    b.Navigation("Location");
+
+                    b.Navigation("OrderStatus");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("ReBottle.Models.Location", b =>
@@ -184,9 +181,9 @@ namespace ReBottle.Models.Migrations
                     b.Navigation("RecyclingRecords");
                 });
 
-            modelBuilder.Entity("ReBottle.Models.RecyclingRecord", b =>
+            modelBuilder.Entity("ReBottle.Models.User", b =>
                 {
-                    b.Navigation("Users");
+                    b.Navigation("RecyclingRecords");
                 });
 #pragma warning restore 612, 618
         }

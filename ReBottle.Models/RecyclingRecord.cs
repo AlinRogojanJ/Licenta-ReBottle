@@ -40,7 +40,7 @@ namespace ReBottle.Models
         //1-to-many
         public OrderStatus OrderStatus { get; set; }
 
-        public ICollection<User> Users { get; set; }
+        public User User { get; set; }
         
 
     }

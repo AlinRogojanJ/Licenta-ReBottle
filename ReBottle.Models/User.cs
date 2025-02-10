@@ -14,9 +14,6 @@ namespace ReBottle.Models
         [Key] [Required] [NotNull]
         public Guid UserId { get; set; }
 
-        [ForeignKey("RecyclingRecordId")] [Required] [NotNull]
-        public Guid RecyclingRecordId { get; set; }
-
         public string Username { get; set; }
 
         public string Password { get; set; }
@@ -29,6 +26,8 @@ namespace ReBottle.Models
 
         public DateTime Updated { get; set; }
 
-        public RecyclingRecord RecyclingRecord { get; set; }
+        public bool IsActive { get; set; }
+
+        public ICollection<RecyclingRecord> RecyclingRecords { get; set; }
     }
 }
