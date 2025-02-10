@@ -23,5 +23,16 @@ namespace ReBottle.Services.Repositories
         {
             return await _reBottleContext.Users.ToListAsync();
         }
+
+        public async Task<User?> GetUserByIdAsync(string id)
+        {
+            return await _reBottleContext.Users.FirstOrDefaultAsync(r => r.UserId.ToString() == id);
+        }
+
+        public async Task AddUserAsync(User user)
+        {
+            await _reBottleContext.Users.AddAsync(user);
+            await _reBottleContext.SaveChangesAsync();
+        }
     }
 }

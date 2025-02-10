@@ -10,5 +10,7 @@ namespace ReBottle.Services.Interfaces
     public interface IUserRepository
     {
         Task<IEnumerable<User>> GetAllUsersAsync();
+        Task<User?> GetUserByIdAsync(string id);
+        Task AddUserAsync(User user);
     }
 }
