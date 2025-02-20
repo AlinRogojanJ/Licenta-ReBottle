@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.JsonPatch;
+using Microsoft.AspNetCore.Mvc;
 using ReBottle.Models;
 using ReBottle.Models.DTOs;
 using ReBottle.Services.Interfaces;
+using AutoMapper;
 
 namespace ReBottle.Web.Controllers
 {
@@ -10,6 +12,7 @@ namespace ReBottle.Web.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
+        private readonly IMapper _mapper;
         public UserController(IUserService userService)
         {
             _userService = userService;
@@ -24,7 +27,7 @@ namespace ReBottle.Web.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetUserById(string id)
+        public async Task<IActionResult> GetUserById(Guid id)
         {
             var user = await _userService.GetUserByIdAsync(id);
             if (user == null)
@@ -43,13 +46,64 @@ namespace ReBottle.Web.Controllers
                 Username = userDTO.UserName,
                 Email = userDTO.Email,
                 Phone = userDTO.Phone,
-                Password = userDTO.Password
+                Password = userDTO.Password,
+                Created = DateTime.Now,
+                Updated = DateTime.Now,
+                IsActive = true
             };
 
             await _userService.AddUserAsync(user);
 
             return Ok("User created successfully");
         }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteUserAsync([FromRoute] Guid id)
+        {
+            if(!ModelState.IsValid) return BadRequest(ModelState);
+
+            await _userService.DeleteUserAsync(id);
+            return Ok("User deleted successfully");
+        }
+
+        [HttpGet("{id}/editable")]
+        public async Task<IActionResult> GetEditableUser(Guid id)
+        {
+            var user = await _userService.GetUserByIdAsync(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            return Ok(new
+            {
+                user.Username,
+                user.Email,
+                user.Phone,
+                user.IsActive
+            });
+        }
+
+        [HttpPatch("{id}")]
+        public async Task<IActionResult> PatchUser(Guid id, [FromBody] JsonPatchDocument<UserUpdateDTO> patchDoc)
+        {
+            if (patchDoc == null)
+            {
+                return BadRequest("Patch document cannot be null.");
+            }
+
+            try
+            {
+                var updatedUser = await _userService.UpdateUserAsync(id, patchDoc);
+                return Ok(updatedUser);
+            }
+            catch (Exception ex)
+            {
+                // Customize the error handling as needed.
+                return NotFound(new { message = ex.Message });
+            }
+        }
+
+
 
     }
 }

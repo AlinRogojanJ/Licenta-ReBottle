@@ -9,6 +9,7 @@ namespace ReBottle.Web.Mapper
         public MappingProfile()
         {
             CreateMap<User, UserDTO>().ReverseMap();
+            CreateMap<User, UserUpdateDTO>().ReverseMap();
         }
     }
 }
