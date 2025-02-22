@@ -1,11 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
+using Azure.Core;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.JsonPatch;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 using ReBottle.Models;
+using ReBottle.Models.Data;
 using ReBottle.Models.DTOs;
 using ReBottle.Services.Interfaces;
 
@@ -15,11 +23,15 @@ namespace ReBottle.Services
     {
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
+        private readonly ReBottleContext _reBottleContext;
+        private readonly IConfiguration _configuration;
 
-        public UserService(IUserRepository userRepository, IMapper mapper)
+        public UserService(IUserRepository userRepository, IMapper mapper, ReBottleContext reBottleContext, IConfiguration configuration)
         {
             _userRepository = userRepository;
             _mapper = mapper;
+            _reBottleContext = reBottleContext;
+            _configuration = configuration;
         }
 
         public async Task<IEnumerable<UserDTO>> GetAllUsersAsync()
@@ -34,9 +46,62 @@ namespace ReBottle.Services
             return _mapper.Map<User>(user);
         }
 
-        public async Task AddUserAsync(User user)
+        public async Task<User?> AddUserAsync(UserDTO request)
         {
+            var user = new User
+            {
+                UserId = Guid.NewGuid(),
+                Username = request.Username,
+                Email = request.Email,
+                Phone = request.Phone,
+                Password = request.Password,
+                Created = DateTime.Now,
+                Updated = DateTime.Now,
+                IsActive = true
+            };
+            var hashedPassword = new PasswordHasher<User>()
+                .HashPassword(user, request.Password);
+
+            user.Username = request.Username;
+            user.Password = hashedPassword;
+
             await _userRepository.AddUserAsync(user);
+
+            return user;
+
+        }
+
+        public async Task<string?> LoginAsync(UserDTO request)
+        {
+            var user = await _reBottleContext.Users.FirstOrDefaultAsync(u => u.Username == request.Username);
+            if (user is null) return null;
+            if (new PasswordHasher<User>().VerifyHashedPassword(user, user.Password, request.Password) ==
+                PasswordVerificationResult.Failed) return null;
+
+           return CreateToken(user);
+        }
+
+        private string CreateToken(User user)
+        {
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Name, user.Username),
+                new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString())
+            };
+
+            var key = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(_configuration.GetValue<string>("AppSettings:Token")!));
+
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512);
+            var tokenDescriptor = new JwtSecurityToken(
+                issuer: _configuration.GetValue<string>("AppSettings:Issuer"),
+                audience: _configuration.GetValue<string>("AppSettings:Audience"),
+                claims: claims,
+                expires: DateTime.Now.AddDays(1),
+                signingCredentials: creds
+            );
+
+            return new JwtSecurityTokenHandler().WriteToken(tokenDescriptor);
         }
 
         public async Task DeleteUserAsync(Guid id)

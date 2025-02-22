@@ -4,9 +4,11 @@ using ReBottle.Models;
 using ReBottle.Models.DTOs;
 using ReBottle.Services.Interfaces;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ReBottle.Web.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class UserController : ControllerBase
@@ -37,25 +39,25 @@ namespace ReBottle.Web.Controllers
             return Ok(user);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> AddUser([FromBody] UserDTO userDTO)
-        {
-            var user = new User
-            {
-                UserId = Guid.NewGuid(),
-                Username = userDTO.UserName,
-                Email = userDTO.Email,
-                Phone = userDTO.Phone,
-                Password = userDTO.Password,
-                Created = DateTime.Now,
-                Updated = DateTime.Now,
-                IsActive = true
-            };
+        //[HttpPost]
+        //public async Task<IActionResult> AddUser([FromBody] UserDTO userDTO)
+        //{
+        //    var user = new User
+        //    {
+        //        UserId = Guid.NewGuid(),
+        //        Username = userDTO.Username,
+        //        Email = userDTO.Email,
+        //        Phone = userDTO.Phone,
+        //        Password = userDTO.Password,
+        //        Created = DateTime.Now,
+        //        Updated = DateTime.Now,
+        //        IsActive = true
+        //    };
 
-            await _userService.AddUserAsync(user);
+        //    await _userService.AddUserAsync(user);
 
-            return Ok("User created successfully");
-        }
+        //    return Ok("User created successfully");
+        //}
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUserAsync([FromRoute] Guid id)

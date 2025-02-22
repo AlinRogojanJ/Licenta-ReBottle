@@ -31,6 +31,9 @@ namespace ReBottle.Services.Repositories
 
         public async Task AddUserAsync(User user)
         {
+            //if (await _reBottleContext.Users.AnyAsync(u => u.Username == user.Username))
+            //    return null;
+
             await _reBottleContext.Users.AddAsync(user);
             await _reBottleContext.SaveChangesAsync();
         }
