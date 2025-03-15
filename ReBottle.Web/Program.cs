@@ -81,6 +81,8 @@ builder.Services.AddSwaggerGen(c =>
 // Register Interfaces and Implementations
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<ILocationRepository, LocationRepository>();
+builder.Services.AddScoped<ILocationService, LocationService>();
 
 builder.Services.AddCors(options =>
 {

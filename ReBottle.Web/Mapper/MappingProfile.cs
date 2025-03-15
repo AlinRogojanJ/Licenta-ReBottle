@@ -10,6 +10,8 @@ namespace ReBottle.Web.Mapper
         {
             CreateMap<User, UserDTO>().ReverseMap();
             CreateMap<User, UserUpdateDTO>().ReverseMap();
+            CreateMap<Location, LocationDTO>().ReverseMap();
+            CreateMap<Location, LocationUpdateDTO>().ReverseMap();
         }
     }
 }

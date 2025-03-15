@@ -68,22 +68,22 @@ namespace ReBottle.Web.Controllers
             return Ok("User deleted successfully");
         }
 
-        [HttpGet("{id}/editable")]
-        public async Task<IActionResult> GetEditableUser(Guid id)
-        {
-            var user = await _userService.GetUserByIdAsync(id);
-            if (user == null)
-            {
-                return NotFound();
-            }
-            return Ok(new
-            {
-                user.Username,
-                user.Email,
-                user.Phone,
-                user.IsActive
-            });
-        }
+        //[HttpGet("{id}/editable")]
+        //public async Task<IActionResult> GetEditableUser(Guid id)
+        //{
+        //    var user = await _userService.GetUserByIdAsync(id);
+        //    if (user == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    return Ok(new
+        //    {
+        //        user.Username,
+        //        user.Email,
+        //        user.Phone,
+        //        user.IsActive
+        //    });
+        //}
 
         [HttpPatch("{id}")]
         public async Task<IActionResult> PatchUser(Guid id, [FromBody] JsonPatchDocument<UserUpdateDTO> patchDoc)
@@ -100,7 +100,6 @@ namespace ReBottle.Web.Controllers
             }
             catch (Exception ex)
             {
-                // Customize the error handling as needed.
                 return NotFound(new { message = ex.Message });
             }
         }
