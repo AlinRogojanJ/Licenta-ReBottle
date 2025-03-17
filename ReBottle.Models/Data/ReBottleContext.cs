@@ -34,10 +34,10 @@ namespace ReBottle.Models.Data
                 .HasForeignKey(r => r.UserId);     
 
             // One-to-Many: RecyclingRecords -> OrderStatus
-            modelBuilder.Entity<RecyclingRecord>()
-                .HasOne(r => r.OrderStatus)
-                .WithMany(s => s.RecyclingRecords)
-                .HasForeignKey(r => r.OrderStatusId);
+            //modelBuilder.Entity<RecyclingRecord>()
+            //    .HasOne(r => r.OrderStatus)
+            //    .WithMany(s => s.RecyclingRecords)
+            //    .HasForeignKey(r => r.OrderStatusId);
 
             // One-to-Many: RecyclingRecords -> Location
             modelBuilder.Entity<RecyclingRecord>()

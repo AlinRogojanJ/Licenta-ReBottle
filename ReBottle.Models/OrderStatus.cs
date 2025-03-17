@@ -14,6 +14,6 @@ namespace ReBottle.Models
         public Guid OrderStatusId { get; set; }
         public string OrderStatusName { get; set; }
 
-        public ICollection<RecyclingRecord> RecyclingRecords { get; set; }
+        //public ICollection<RecyclingRecord> RecyclingRecords { get; set; }
     }
 }

@@ -85,7 +85,6 @@ namespace ReBottle.Web.Controllers
             }
             catch (Exception ex)
             {
-                // Customize the error handling as needed.
                 return NotFound(new { message = ex.Message });
             }
         }
