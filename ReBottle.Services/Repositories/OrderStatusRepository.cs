@@ -25,6 +25,11 @@ namespace ReBottle.Services.Repositories
             await _reBottleContext.SaveChangesAsync();
         }
 
+        public async Task<OrderStatus> GetOrderStatusByIdAsync(Guid id)
+        {
+            return await _reBottleContext.OrderStatuses.FirstOrDefaultAsync(r => r.OrderStatusId == id);
+        }
+
         public async Task DeleteOrderStatusAsync(Guid id)
         {
             var orderStatus = await _reBottleContext.OrderStatuses.FindAsync(id);

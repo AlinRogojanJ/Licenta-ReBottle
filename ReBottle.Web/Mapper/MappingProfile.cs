@@ -9,9 +9,13 @@ namespace ReBottle.Web.Mapper
         public MappingProfile()
         {
             CreateMap<User, UserDTO>().ReverseMap();
-            CreateMap<User, UserUpdateDTO>().ReverseMap();
+            CreateMap<User, UserGetDTO>().ReverseMap();
             CreateMap<Location, LocationDTO>().ReverseMap();
-            CreateMap<Location, LocationUpdateDTO>().ReverseMap();
+            CreateMap<Location, LocationGetDTO>().ReverseMap();
+            CreateMap<OrderStatus, OrderStatusDTO>().ReverseMap();
+            CreateMap<OrderStatus, OrderStatusGetDTO>().ReverseMap();
+            CreateMap<RecyclingRecord, RecyclingRecordUpdateDTO>().ReverseMap();
+            CreateMap<RecyclingRecord, RecyclingRecordDTO>().ReverseMap();
         }
     }
 }

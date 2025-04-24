@@ -6,16 +6,20 @@ using System.Threading.Tasks;
 
 namespace ReBottle.Models.DTOs
 {
-    public class UserUpdateDTO
+    public class UserGetDTO
     {
-        public string Username { get; set; }
+        public Guid UserId { get; set; }
 
-        public string Password { get; set; }
+        public string Username { get; set; }
 
         public string Email { get; set; }
 
         public string Phone { get; set; }
 
-        public bool? IsActive { get; set; }
+        public DateTime Created { get; set; }
+
+        public DateTime Updated { get; set; }
+
+        public bool IsActive { get; set; }
     }
 }

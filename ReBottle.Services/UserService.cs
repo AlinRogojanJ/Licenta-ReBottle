@@ -34,16 +34,16 @@ namespace ReBottle.Services
             _configuration = configuration;
         }
 
-        public async Task<IEnumerable<UserDTO>> GetAllUsersAsync()
+        public async Task<IEnumerable<UserGetDTO>> GetAllUsersAsync()
         {
             var users = await _userRepository.GetAllUsersAsync();
-            return _mapper.Map<IEnumerable<UserDTO>>(users);
+            return _mapper.Map<IEnumerable<UserGetDTO>>(users);
         }
 
-        public async Task<User> GetUserByIdAsync(Guid id)
+        public async Task<UserGetDTO> GetUserByIdAsync(Guid id)
         {
             var user = await _userRepository.GetUserByIdAsync(id);
-            return _mapper.Map<User>(user);
+            return _mapper.Map<UserGetDTO>(user);
         }
 
         public async Task<User?> AddUserAsync(UserDTO request)
@@ -109,7 +109,7 @@ namespace ReBottle.Services
             await _userRepository.DeleteUserAsync(id);
         }
 
-        public async Task<User> UpdateUserAsync(Guid userId, JsonPatchDocument<UserUpdateDTO> patchDoc)
+        public async Task<User> UpdateUserAsync(Guid userId, JsonPatchDocument<UserDTO> patchDoc)
         {
             var user = await _userRepository.GetUserByIdAsync(userId);
             if (user == null)
@@ -117,7 +117,7 @@ namespace ReBottle.Services
                 throw new Exception($"User not found with id: {userId}");
             }
 
-            var userDto = _mapper.Map<UserUpdateDTO>(user);
+            var userDto = _mapper.Map<UserDTO>(user);
 
             patchDoc.ApplyTo(userDto);
             _mapper.Map(userDto, user);

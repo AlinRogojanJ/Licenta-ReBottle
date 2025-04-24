@@ -20,9 +20,9 @@ namespace ReBottle.Web.Controllers
         public async Task<ActionResult<User>> Register(UserDTO request)
         {
             var user = await userService.AddUserAsync(request);
-            if (user is null) return BadRequest("User allready exists");
+            if (user is null) return BadRequest("User already exists");
 
-            return Ok(user);
+            return Ok("User added successfully");
         }
 
         [HttpPost("login")]

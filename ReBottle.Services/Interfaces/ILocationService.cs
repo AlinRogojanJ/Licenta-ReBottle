@@ -11,10 +11,10 @@ namespace ReBottle.Services.Interfaces
 {
     public interface ILocationService
     {
-        Task<IEnumerable<LocationDTO>> GetAllLocationsAsync();
-        Task<LocationDTO> GetLocationByIdAsync(Guid id);
-        Task AddLocationAsync(Location location);
-        Task<Location> UpdateLocationAsync(Guid id, JsonPatchDocument<LocationUpdateDTO> patchDoc);
+        Task<IEnumerable<LocationGetDTO>> GetAllLocationsAsync();
+        Task<LocationGetDTO> GetLocationByIdAsync(Guid id);
+        Task AddLocationAsync(LocationDTO location);
+        Task<Location> UpdateLocationAsync(Guid id, JsonPatchDocument<LocationDTO> patchDoc);
         Task DeleteLocationAsync(Guid id);
     }
 }

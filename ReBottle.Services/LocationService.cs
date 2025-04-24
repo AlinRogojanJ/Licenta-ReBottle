@@ -23,32 +23,31 @@ namespace ReBottle.Services
         private readonly ILocationRepository _locationRepository;
         private readonly IMapper _mapper;
 
-        public LocationService(ILocationRepository LocationRepository, IMapper mapper)
+        public LocationService(ILocationRepository locationRepository, IMapper mapper)
         {
-            _locationRepository = LocationRepository;
+            _locationRepository = locationRepository;
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<LocationDTO>> GetAllLocationsAsync()
+        public async Task<IEnumerable<LocationGetDTO>> GetAllLocationsAsync()
         {
-            var Locations = await _locationRepository.GetAllLocationsAsync();
-            return _mapper.Map<IEnumerable<LocationDTO>>(Locations);
+            var locations = await _locationRepository.GetAllLocationsAsync();
+            return _mapper.Map<IEnumerable<LocationGetDTO>>(locations);
         }
 
-        public async Task<LocationDTO> GetLocationByIdAsync(Guid id)
+        public async Task<LocationGetDTO> GetLocationByIdAsync(Guid id)
         {
-            var Location = await _locationRepository.GetLocationByIdAsync(id);
-            return _mapper.Map<LocationDTO>(Location);
+            var location = await _locationRepository.GetLocationByIdAsync(id);
+            return _mapper.Map<LocationGetDTO>(location);
         }
 
-        public async Task AddLocationAsync(Location request)
+        public async Task AddLocationAsync(LocationDTO request)
         {
             var location = new Location
             {
                 LocationId = Guid.NewGuid(),
                 LocationName = request.LocationName,
                 Address = request.Address,
-                Status = request.Status,
                 Created = DateTime.Now,
                 Updated = DateTime.Now,
             };
@@ -63,7 +62,7 @@ namespace ReBottle.Services
         }
 
         public async Task<Location> UpdateLocationAsync(Guid locationId,
-            JsonPatchDocument<LocationUpdateDTO> patchDoc)
+            JsonPatchDocument<LocationDTO> patchDoc)
         {
             var location = await _locationRepository.GetLocationByIdAsync(locationId);
             if (location == null)
@@ -71,7 +70,7 @@ namespace ReBottle.Services
                 throw new Exception($"Location not found with id: {locationId}");
             }
 
-            var locationDto = _mapper.Map<LocationUpdateDTO>(location);
+            var locationDto = _mapper.Map<LocationDTO>(location);
 
             patchDoc.ApplyTo(locationDto);
             _mapper.Map(locationDto, location);

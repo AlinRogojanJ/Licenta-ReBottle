@@ -22,13 +22,19 @@ namespace ReBottle.Services
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<OrderStatus>> GetAllOrderStatusAsync()
+        public async Task<IEnumerable<OrderStatusGetDTO>> GetAllOrderStatusAsync()
         {
             var orderStatuss = await _orderStatusRepository.GetAllOrderStatusAsync();
-            return _mapper.Map<IEnumerable<OrderStatus>>(orderStatuss);
+            return _mapper.Map<IEnumerable<OrderStatusGetDTO>>(orderStatuss);
         }
 
-        public async Task AddOrderStatusAsync(OrderStatus request)
+        public async Task<OrderStatusGetDTO> GetOrderStatusByIdAsync(Guid id)
+        {
+            var orderStatus = await _orderStatusRepository.GetOrderStatusByIdAsync(id);
+            return _mapper.Map<OrderStatusGetDTO>(orderStatus);
+        }
+
+        public async Task AddOrderStatusAsync(OrderStatusDTO request)
         {
             var orderStatus = new OrderStatus
             {

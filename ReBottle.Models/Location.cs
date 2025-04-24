@@ -14,7 +14,6 @@ namespace ReBottle.Models
         public Guid LocationId { get; set; }
         public string LocationName { get; set; }
         public string Address { get; set; }
-        public string Status { get; set; }
         public DateTime Created { get; set; }
         public DateTime Updated { get; set; }
 

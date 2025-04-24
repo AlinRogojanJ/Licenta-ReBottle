@@ -18,7 +18,6 @@ namespace ReBottle.Models.Migrations
                     LocationId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     LocationName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Created = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Updated = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -93,6 +92,8 @@ namespace ReBottle.Models.Migrations
                         principalColumn: "UserId",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+
 
             migrationBuilder.CreateIndex(
                 name: "IX_RecyclingRecords_LocationId",

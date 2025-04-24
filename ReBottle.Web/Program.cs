@@ -85,6 +85,8 @@ builder.Services.AddScoped<ILocationRepository, LocationRepository>();
 builder.Services.AddScoped<ILocationService, LocationService>();
 builder.Services.AddScoped<IOrderStatusRepository, OrderStatusRepository>();
 builder.Services.AddScoped<IOrderStatusService, OrderStatusService>();
+builder.Services.AddScoped<IRecyclingRecordRepository, RecyclingRecordRepository>();
+builder.Services.AddScoped<IRecyclingRecordService, RecyclingRecordService>();
 
 builder.Services.AddCors(options =>
 {

@@ -38,7 +38,7 @@ namespace ReBottle.Models
         public Location Location { get; set; }
 
         //1-to-many
-       // public OrderStatus OrderStatus { get; set; }
+        public OrderStatus OrderStatus { get; set; }
 
         public User User { get; set; }
         

@@ -43,19 +43,9 @@ namespace ReBottle.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddLocation([FromBody] LocationUpdateDTO locationUpdateDTO)
+        public async Task<IActionResult> AddLocation([FromBody] LocationDTO locationDTO)
         {
-            var location = new Location
-            {
-                LocationId = Guid.NewGuid(),
-                LocationName = locationUpdateDTO.LocationName,
-                Address = locationUpdateDTO.Address,
-                Status = locationUpdateDTO.Status,
-                Created = DateTime.Now,
-                Updated = DateTime.Now
-            };
-
-            await _locationService.AddLocationAsync(location);
+            await _locationService.AddLocationAsync(locationDTO);
 
             return Ok("Location created successfully");
         }
@@ -71,7 +61,7 @@ namespace ReBottle.Web.Controllers
 
         [HttpPatch("{id}")]
         public async Task<IActionResult> PatchLocation(Guid id,
-            [FromBody] JsonPatchDocument<LocationUpdateDTO> patchDoc)
+            [FromBody] JsonPatchDocument<LocationDTO> patchDoc)
         {
             if (patchDoc == null)
             {

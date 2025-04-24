@@ -29,16 +29,21 @@ namespace ReBottle.Web.Controllers
             return Ok(orderStatus);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> AddOrderStatus([FromBody] OrderStatus request)
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetOrderStatusById(Guid id)
         {
-            var orderStatus = new OrderStatus
+            var orderStatus = await _orderStatusService.GetOrderStatusByIdAsync(id);
+            if (orderStatus == null)
             {
-                OrderStatusId = Guid.NewGuid(),
-                OrderStatusName = request.OrderStatusName,
-            };
+                return NotFound();
+            }
+            return Ok(orderStatus);
+        }
 
-            await _orderStatusService.AddOrderStatusAsync(orderStatus);
+        [HttpPost]
+        public async Task<IActionResult> AddOrderStatus([FromBody] OrderStatusDTO request)
+        {
+            await _orderStatusService.AddOrderStatusAsync(request);
 
             return Ok("OrderStatus created successfully");
         }

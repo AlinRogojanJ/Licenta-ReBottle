@@ -13,9 +13,9 @@ namespace ReBottle.Services.Interfaces
     {
         Task<User?> AddUserAsync(UserDTO request);
         Task<string?> LoginAsync(UserDTO request);
-        Task<IEnumerable<UserDTO>> GetAllUsersAsync();
-        Task<User> GetUserByIdAsync(Guid id);
-        Task<User> UpdateUserAsync(Guid userId, JsonPatchDocument<UserUpdateDTO> patchDoc);
+        Task<IEnumerable<UserGetDTO>> GetAllUsersAsync();
+        Task<UserGetDTO> GetUserByIdAsync(Guid id);
+        Task<User> UpdateUserAsync(Guid userId, JsonPatchDocument<UserDTO> patchDoc);
         Task DeleteUserAsync(Guid id);
     }
 }

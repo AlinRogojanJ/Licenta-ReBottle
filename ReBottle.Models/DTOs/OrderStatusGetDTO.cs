@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace ReBottle.Models.DTOs
 {
-    public class LocationDTO
+    public class OrderStatusGetDTO
     {
-        public string LocationName { get; set; }
-        public string Address { get; set; }
+        public Guid OrderStatusId { get; set; }
+        public string OrderStatusName { get; set; }
     }
 }

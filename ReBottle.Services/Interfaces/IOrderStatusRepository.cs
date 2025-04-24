@@ -11,6 +11,7 @@ namespace ReBottle.Services.Interfaces
     {
         Task<IEnumerable<OrderStatus>> GetAllOrderStatusAsync();
         Task AddOrderStatusAsync(OrderStatus OrderStatus);
+        Task<OrderStatus> GetOrderStatusByIdAsync(Guid id);
         Task DeleteOrderStatusAsync(Guid id);
     }
 }

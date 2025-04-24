@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace ReBottle.Web.Controllers
 {
-    [Authorize]
+   // [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class UserController : ControllerBase
@@ -86,7 +86,7 @@ namespace ReBottle.Web.Controllers
         //}
 
         [HttpPatch("{id}")]
-        public async Task<IActionResult> PatchUser(Guid id, [FromBody] JsonPatchDocument<UserUpdateDTO> patchDoc)
+        public async Task<IActionResult> PatchUser(Guid id, [FromBody] JsonPatchDocument<UserDTO> patchDoc)
         {
             if (patchDoc == null)
             {
