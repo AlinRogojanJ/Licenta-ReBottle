@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ReBottle.Models.Data;
 
@@ -11,9 +12,11 @@ using ReBottle.Models.Data;
 namespace ReBottle.Models.Migrations
 {
     [DbContext(typeof(ReBottleContext))]
-    partial class ReBottleContextModelSnapshot : ModelSnapshot
+    [Migration("20250425163534_LocationTableUpdate")]
+    partial class LocationTableUpdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

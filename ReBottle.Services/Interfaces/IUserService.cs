@@ -12,7 +12,7 @@ namespace ReBottle.Services.Interfaces
     public interface IUserService
     {
         Task<User?> AddUserAsync(UserDTO request);
-        Task<string?> LoginAsync(UserDTO request);
+        Task<string?> LoginAsync(LoginDTO request);
         Task<IEnumerable<UserGetDTO>> GetAllUsersAsync();
         Task<UserGetDTO> GetUserByIdAsync(Guid id);
         Task<User> UpdateUserAsync(Guid userId, JsonPatchDocument<UserDTO> patchDoc);

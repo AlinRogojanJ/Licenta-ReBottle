@@ -48,6 +48,10 @@ namespace ReBottle.Services
                 LocationId = Guid.NewGuid(),
                 LocationName = request.LocationName,
                 Address = request.Address,
+                Longitude = request.Longitude,
+                Latitude = request.Latitude,
+                Image = request.Image,
+                Schedule = request.Schedule,
                 Created = DateTime.Now,
                 Updated = DateTime.Now,
             };

@@ -71,7 +71,7 @@ namespace ReBottle.Services
 
         }
 
-        public async Task<string?> LoginAsync(UserDTO request)
+        public async Task<string?> LoginAsync(LoginDTO request)
         {
             var user = await _reBottleContext.Users.FirstOrDefaultAsync(u => u.Username == request.Username);
             if (user is null) return null;

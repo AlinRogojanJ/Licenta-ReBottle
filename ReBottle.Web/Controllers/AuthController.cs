@@ -26,7 +26,7 @@ namespace ReBottle.Web.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<ActionResult<string>> Login(UserDTO request)
+        public async Task<ActionResult<string>> Login(LoginDTO request)
         {
             var token = await userService.LoginAsync(request);
             if (token is null) return BadRequest("Invalid password or username");
