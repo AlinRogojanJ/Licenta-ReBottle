@@ -15,5 +15,8 @@ namespace ReBottle.Services.Interfaces
         Task<RecyclingRecordDTO> GetRecyclingRecordByIdAsync(Guid id);
         Task AddRecyclingRecordAsync(RecyclingRecordUpdateDTO recyclingRecord);
         Task DeleteRecyclingRecordAsync(Guid id);
+        Task<Dictionary<string, List<RecyclingReportDTO>>> GetUserRecordsGroupedByMonthAsync(Guid userId);
+        Task<List<MonthlyReportDTO>> GetMonthlyTotalsAsync(Guid userId);
+
     }
 }

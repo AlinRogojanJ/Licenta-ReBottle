@@ -72,5 +72,43 @@ namespace ReBottle.Services
         {
             await _recyclingRecordRepository.DeleteRecyclingRecordAsync(id);
         }
+
+        public async Task<Dictionary<string, List<RecyclingReportDTO>>> GetUserRecordsGroupedByMonthAsync(Guid userId)
+        {
+            var records = await _recyclingRecordRepository.GetRecordsFromLastSixMonthsAsync(userId);
+
+            var grouped = records
+                .OrderByDescending(r => r.Date)
+                .GroupBy(r => r.Date.ToString("MMM yyyy")) 
+                .ToDictionary(
+                    g => g.Key,
+                    g => g.Select(r => new RecyclingReportDTO
+                    {
+                        Date = r.Date.ToString("MMM dd, yyyy"),     
+                        Amount = $"+{r.MoneySaved} RON",            
+                        Progress = $"{r.Amount} bottles"          
+                    }).ToList()
+                );
+
+            return grouped;
+        }
+
+        public async Task<List<MonthlyReportDTO>> GetMonthlyTotalsAsync(Guid userId)
+        {
+            var records = await _recyclingRecordRepository.GetRecordsFromLastSixMonthsAsync(userId);
+
+            var groupedTotals = records
+                .GroupBy(r => new { r.Date.Year, r.Date.Month })
+                .Select(g => new MonthlyReportDTO
+                {
+                    Month = new DateTime(g.Key.Year, g.Key.Month, 1).ToString("MMM"),
+                    TotalBottles = g.Sum(r => r.Amount)
+                })
+                .OrderByDescending(g => g.Month)
+                .ToList();
+
+            return groupedTotals;
+        }
+
     }
 }

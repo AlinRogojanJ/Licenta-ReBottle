@@ -45,5 +45,14 @@ namespace ReBottle.Services.Repositories
 
             await _reBottleContext.SaveChangesAsync();
         }
+
+        public async Task<List<RecyclingRecord>> GetRecordsFromLastSixMonthsAsync(Guid userId)
+        {
+            var sixMonthsAgo = DateTime.UtcNow.AddMonths(-6);
+
+            return await _reBottleContext.RecyclingRecords
+                .Where(r => r.UserId == userId && r.Date >= sixMonthsAgo)
+                .ToListAsync();
+        }
     }
 }

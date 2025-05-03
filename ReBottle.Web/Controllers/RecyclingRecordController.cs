@@ -57,5 +57,21 @@ namespace ReBottle.Web.Controllers
 
             return Ok("Recyling Record deleted successfully");
         }
+
+        [HttpGet("grouped-by-month/{userId}")]
+        public async Task<IActionResult> GetUserRecordsGroupedByMonth(Guid userId)
+        {
+            var groupedRecords = await _recyclingRecordService.GetUserRecordsGroupedByMonthAsync(userId);
+            return Ok(groupedRecords);
+        }
+
+        [HttpGet("monthly-totals/{userId}")]
+        public async Task<IActionResult> GetMonthlyTotals(Guid userId)
+        {
+            var monthlyTotals = await _recyclingRecordService.GetMonthlyTotalsAsync(userId);
+            return Ok(monthlyTotals);
+        }
+
+
     }
 }

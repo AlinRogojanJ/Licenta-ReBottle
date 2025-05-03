@@ -13,5 +13,8 @@ namespace ReBottle.Services.Interfaces
         Task<RecyclingRecord?> GetRecyclingRecordByIdAsync(Guid id);
         Task AddRecyclingRecordAsync(RecyclingRecord recyclingRecord);
         Task DeleteRecyclingRecordAsync(Guid id);
+        Task<List<RecyclingRecord>> GetRecordsFromLastSixMonthsAsync(Guid userId);
+
+
     }
 }
