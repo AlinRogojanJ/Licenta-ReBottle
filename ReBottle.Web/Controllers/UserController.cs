@@ -5,6 +5,8 @@ using ReBottle.Models.DTOs;
 using ReBottle.Services.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
+using ReBottle.Models.Data;
 
 namespace ReBottle.Web.Controllers
 {
@@ -15,9 +17,11 @@ namespace ReBottle.Web.Controllers
     {
         private readonly IUserService _userService;
         private readonly IMapper _mapper;
-        public UserController(IUserService userService)
+        private readonly ReBottleContext _reBottleContext;
+        public UserController(IUserService userService, ReBottleContext reBottleContext)
         {
             _userService = userService;
+            _reBottleContext = reBottleContext;
         }
 
         [HttpGet]
@@ -104,7 +108,19 @@ namespace ReBottle.Web.Controllers
             }
         }
 
+        [HttpPut("update-avatar/{id}")]
+        public async Task<IActionResult> UpdateAvatar([FromBody] UserAvatarDTO dto, [FromRoute] Guid id)
+        {
+            var user = await _reBottleContext.Users.FirstOrDefaultAsync(u => u.UserId == id);
 
+            if (user == null)
+                return NotFound();
+
+            user.Avatar = dto.Avatar;
+            await _reBottleContext.SaveChangesAsync();
+
+            return Ok(new { avatar = user.Avatar });
+        }
 
     }
 }

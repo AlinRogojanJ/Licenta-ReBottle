@@ -21,5 +21,8 @@ namespace ReBottle.Models.DTOs
         public DateTime Updated { get; set; }
 
         public bool IsActive { get; set; }
+
+        public string name { get; set; }
+        public string avatar { get; set; }
     }
 }
