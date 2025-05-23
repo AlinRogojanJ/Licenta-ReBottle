@@ -28,6 +28,10 @@ namespace ReBottle.Models
 
         public bool IsActive { get; set; }
 
+        public string Avatar { get; set; }
+
+        public string Name { get; set; }
+
         public ICollection<RecyclingRecord> RecyclingRecords { get; set; }
     }
 }

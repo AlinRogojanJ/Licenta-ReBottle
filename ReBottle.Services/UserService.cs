@@ -57,7 +57,9 @@ namespace ReBottle.Services
                 Password = request.Password,
                 Created = DateTime.Now,
                 Updated = DateTime.Now,
-                IsActive = true
+                IsActive = true,
+                Avatar = request.Avatar,
+                Name = request.Name,
             };
             var hashedPassword = new PasswordHasher<User>()
                 .HashPassword(user, request.Password);

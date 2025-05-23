@@ -99,16 +99,18 @@ namespace ReBottle.Services
 
             var groupedTotals = records
                 .GroupBy(r => new { r.Date.Year, r.Date.Month })
+                .OrderBy(g => g.Key.Year)
+                .ThenBy(g => g.Key.Month)
                 .Select(g => new MonthlyReportDTO
                 {
                     Month = new DateTime(g.Key.Year, g.Key.Month, 1).ToString("MMM"),
                     TotalBottles = g.Sum(r => r.Amount)
                 })
-                .OrderByDescending(g => g.Month)
                 .ToList();
 
             return groupedTotals;
         }
+
 
     }
 }

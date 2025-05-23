@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ReBottle.Models.DTOs;
 using ReBottle.Models;
@@ -7,7 +8,7 @@ using ReBottle.Services;
 
 namespace ReBottle.Web.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class RecyclingRecordController : ControllerBase
