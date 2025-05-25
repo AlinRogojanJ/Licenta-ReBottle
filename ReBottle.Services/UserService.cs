@@ -48,6 +48,13 @@ namespace ReBottle.Services
 
         public async Task<User?> AddUserAsync(UserDTO request)
         {
+            if (string.IsNullOrWhiteSpace(request.Username) ||
+                string.IsNullOrWhiteSpace(request.Password))
+            {
+                
+                return null;
+            }
+
             var user = new User
             {
                 UserId = Guid.NewGuid(),
