@@ -33,5 +33,6 @@ namespace ReBottle.Models
         public string Name { get; set; }
 
         public ICollection<RecyclingRecord> RecyclingRecords { get; set; }
+        public ICollection<ImageStorage> ImagesStorage { get; set; }
     }
 }

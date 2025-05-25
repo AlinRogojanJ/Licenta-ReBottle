@@ -24,6 +24,7 @@ namespace ReBottle.Models.Data
         public DbSet<OrderStatus> OrderStatuses { get; set; }
         public DbSet<Location> Locations { get; set; }
         //public DbSet<Schedule> Schedules { get; set; }
+        public DbSet<ImageStorage> ImagesStorage { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -44,6 +45,12 @@ namespace ReBottle.Models.Data
                 .HasOne(r => r.Location)
                 .WithMany(s => s.RecyclingRecords)
                 .HasForeignKey(r => r.LocationId);
+
+            modelBuilder.Entity<ImageStorage>()
+                .HasOne(i => i.User)
+                .WithMany(u => u.ImagesStorage)  
+                .HasForeignKey(i => i.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
 
     }

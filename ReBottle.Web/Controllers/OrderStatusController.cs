@@ -5,10 +5,11 @@ using ReBottle.Models.DTOs;
 using ReBottle.Models;
 using ReBottle.Services.Interfaces;
 using Azure.Core;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ReBottle.Web.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class OrderStatusController : ControllerBase

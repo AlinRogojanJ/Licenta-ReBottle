@@ -100,6 +100,13 @@ builder.Services.AddCors(options =>
         builder => builder.AllowAnyOrigin()
             .AllowAnyMethod()
             .AllowAnyHeader());
+}); builder.WebHost.ConfigureKestrel(options =>
+{
+    options.ListenAnyIP(5000); // HTTP
+    options.ListenAnyIP(7179, listenOptions =>
+    {
+        listenOptions.UseHttps(); // uses your dev cert
+    });
 });
 
 var app = builder.Build();
@@ -113,7 +120,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseCors("AllowAll");
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();
