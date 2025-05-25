@@ -29,14 +29,18 @@ namespace ReBottle.Services.Repositories
             return await _reBottleContext.Users.FirstOrDefaultAsync(r => r.UserId == id);
         }
 
-        public async Task AddUserAsync(User user)
+
+
+        public async Task<User?> AddUserAsync(User user)
         {
-            //if (await _reBottleContext.Users.AnyAsync(u => u.Username == user.Username))
-            //    return null;
+            if (await _reBottleContext.Users.AnyAsync(u => u.Username == user.Username))
+                return null; // Username exists, return null
 
             await _reBottleContext.Users.AddAsync(user);
             await _reBottleContext.SaveChangesAsync();
+            return user;
         }
+
 
         public async Task DeleteUserAsync(Guid id)
         {
