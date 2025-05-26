@@ -41,13 +41,19 @@ namespace ReBottle.Web.Controllers
             return Ok(location);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> AddRecycle([FromBody] RecyclingRecordUpdateDTO request)
+        [HttpPost("{id}")]
+        public async Task<IActionResult> AddRecycle(
+            [FromRoute] Guid id,
+            [FromBody] RecyclingRecordUpdateDTO request)
         {
-            await _recyclingRecordService.AddRecyclingRecordAsync(request);
+            var newRecordId = await _recyclingRecordService
+                .AddRecyclingRecordAsync(id, request);
 
-            return Ok("Recycle created successfully");
+            // return 201 Created with the new ID in the body
+            return Ok(new { recyclingRecordId = newRecordId });
+
         }
+
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteRecyclingRecord([FromRoute] Guid id)

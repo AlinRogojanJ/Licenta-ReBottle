@@ -45,12 +45,13 @@ namespace ReBottle.Services
             return _mapper.Map<RecyclingRecordDTO>(recyclingRecord);
         }
 
-        public async Task AddRecyclingRecordAsync(RecyclingRecordUpdateDTO request)
+        // from:
+        public async Task<Guid> AddRecyclingRecordAsync(Guid id, RecyclingRecordUpdateDTO request)
         {
-            var user = await _userRepository.GetUserByIdAsync(request.UserId);
+            var user = await _userRepository.GetUserByIdAsync(id);
             var location = await _locationRepository.GetLocationByIdAsync(request.LocationId);
             var orderStatus = await _orderStatusRepository.GetOrderStatusByIdAsync(request.OrderStatusId);
-            var moneySaved = request.Amount * 0.5;
+
             var recyclingRecord = new RecyclingRecord
             {
                 RecyclingRecordId = Guid.NewGuid(),
@@ -58,7 +59,7 @@ namespace ReBottle.Services
                 LocationId = location!.LocationId,
                 OrderStatusId = orderStatus.OrderStatusId,
                 Amount = request.Amount,
-                MoneySaved = (float)moneySaved,
+                MoneySaved = (float)(request.Amount * 0.5),
                 Method = request.Method,
                 Date = request.Date,
                 Created = DateTime.Now,
@@ -66,7 +67,9 @@ namespace ReBottle.Services
 
             await _recyclingRecordRepository.AddRecyclingRecordAsync(recyclingRecord);
 
+            return recyclingRecord.RecyclingRecordId;
         }
+
 
         public async Task DeleteRecyclingRecordAsync(Guid id)
         {

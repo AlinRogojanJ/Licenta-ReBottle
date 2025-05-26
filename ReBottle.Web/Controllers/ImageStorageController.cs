@@ -23,7 +23,7 @@ namespace ReBottle.Web.Controllers
             if (request.File.Length == 0)
                 return BadRequest("No file submitted.");
 
-            // verify user exists
+           
             var user = await _db.Users.FindAsync(request.UserId);
             if (user == null)
                 return NotFound($"User {request.UserId} not found.");
@@ -36,7 +36,8 @@ namespace ReBottle.Web.Controllers
                 FileName = request.File.FileName,
                 ContentType = request.File.ContentType!,
                 Data = ms.ToArray(),
-                UserId = request.UserId
+                UserId = request.UserId,
+                RecyclingRecordId = request.RecyclingRecordId,
             };
 
             _db.ImagesStorage.Add(img);

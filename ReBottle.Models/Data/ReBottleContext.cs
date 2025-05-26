@@ -51,6 +51,13 @@ namespace ReBottle.Models.Data
                 .WithMany(u => u.ImagesStorage)  
                 .HasForeignKey(i => i.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<ImageStorage>()
+                .HasOne(i => i.RecyclingRecord)
+                .WithOne(r => r.ImagesStorage)               
+                .HasForeignKey<ImageStorage>(i => i.RecyclingRecordId)
+                .OnDelete(DeleteBehavior.Cascade);
+
         }
 
     }

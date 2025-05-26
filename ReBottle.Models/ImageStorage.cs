@@ -15,9 +15,14 @@ namespace ReBottle.Models
         public Guid Id { get; set; } = Guid.NewGuid();
         [ForeignKey("UserId")] [Required] [NotNull]
         public Guid UserId { get; set; }
+        [ForeignKey("RecyclingRecordId")]
+        [Required]
+        [NotNull]
+        public Guid? RecyclingRecordId { get; set; }
         public string FileName { get; set; } 
         public string ContentType { get; set; } 
         public byte[] Data { get; set; } 
-        public User User { get; set; } 
+        public User User { get; set; }
+        public RecyclingRecord? RecyclingRecord { get; set; }
     }
 }

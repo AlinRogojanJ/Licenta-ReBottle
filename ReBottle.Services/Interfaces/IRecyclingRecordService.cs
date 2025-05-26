@@ -13,7 +13,7 @@ namespace ReBottle.Services.Interfaces
     {
         Task<IEnumerable<RecyclingRecordDTO>> GetAllRecyclingRecordsAsync();
         Task<RecyclingRecordDTO> GetRecyclingRecordByIdAsync(Guid id);
-        Task AddRecyclingRecordAsync(RecyclingRecordUpdateDTO recyclingRecord);
+        Task<Guid> AddRecyclingRecordAsync(Guid id, RecyclingRecordUpdateDTO request);
         Task DeleteRecyclingRecordAsync(Guid id);
         Task<Dictionary<string, List<RecyclingReportDTO>>> GetUserRecordsGroupedByMonthAsync(Guid userId);
         Task<List<MonthlyReportDTO>> GetMonthlyTotalsAsync(Guid userId);

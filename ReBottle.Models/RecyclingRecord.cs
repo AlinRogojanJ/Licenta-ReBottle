@@ -41,7 +41,8 @@ namespace ReBottle.Models
         public OrderStatus OrderStatus { get; set; }
 
         public User User { get; set; }
-        
+        public ImageStorage ImagesStorage { get; set; }
+
 
     }
 }
