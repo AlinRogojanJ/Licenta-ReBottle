@@ -17,5 +17,7 @@ namespace ReBottle.Services.Interfaces
         Task<UserGetDTO> GetUserByIdAsync(Guid id);
         Task<User> UpdateUserAsync(Guid userId, JsonPatchDocument<UserDTO> patchDoc);
         Task DeleteUserAsync(Guid id);
+        Task<bool> ForgotPasswordAsync(string email);
+        Task<bool> ResetPasswordAsync(string token, string newPassword);
     }
 }

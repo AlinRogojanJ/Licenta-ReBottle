@@ -122,5 +122,31 @@ namespace ReBottle.Web.Controllers
             return Ok(new { avatar = user.Avatar });
         }
 
+        [HttpPost("forgot-password")]
+        public async Task<IActionResult> ForgotPassword([FromBody] string email)
+        {
+            var result = await _userService.ForgotPasswordAsync(email);
+            if (!result)
+                return NotFound("User with this email does not exist.");
+
+            return Ok("Password reset email sent.");
+        }
+
+        public class ResetPasswordDTO
+        {
+            public string Token { get; set; } = string.Empty;
+            public string NewPassword { get; set; } = string.Empty;
+        }
+
+        [HttpPost("reset-password")]
+        public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDTO model)
+        {
+            var result = await _userService.ResetPasswordAsync(model.Token, model.NewPassword);
+            if (!result)
+                return BadRequest("Invalid or expired token.");
+
+            return Ok("Password has been reset successfully.");
+        }
+
     }
 }

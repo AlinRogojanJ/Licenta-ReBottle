@@ -95,6 +95,8 @@ builder.Services.AddScoped<IRecyclingRecordRepository, RecyclingRecordRepository
 builder.Services.AddScoped<IRecyclingRecordService, RecyclingRecordService>();
 builder.Services.AddScoped<IImagesRepository, ImagesRepository>();
 builder.Services.AddScoped<IImageService, ImageService>();
+builder.Services.AddTransient<EmailSender>();
+
 
 builder.Services.AddCors(options =>
 {

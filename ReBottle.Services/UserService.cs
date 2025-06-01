@@ -137,5 +137,91 @@ namespace ReBottle.Services
             return user;
         }
 
+        public async Task<bool> ForgotPasswordAsync(string email)
+        {
+            var user = await _reBottleContext.Users.FirstOrDefaultAsync(u => u.Email == email);
+            if (user == null) return false;
+
+            // Generate password reset token (short expiry token)
+            var token = CreateToken(user, expiresInMinutes: 15); // Reuse CreateToken, adjust as needed
+
+            var resetLink = $"https://localhost:7179/api/User/reset-password?token={token}";
+            var subject = "Reset Your Password";
+            var body = $@"
+    <html>
+        <body>
+            <p>Click the link below to reset your password:</p>
+            <p><a href=""{resetLink}"" target=""_blank"">{resetLink}</a></p>
+        </body>
+    </html>";
+
+
+            var emailSender = new EmailSender(_configuration);
+            await emailSender.SendEmailAsync(email, subject, body);
+
+            return true;
+        }
+
+        private string CreateToken(User user, int expiresInMinutes = 60 * 24)
+        {
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
+                new Claim(ClaimTypes.Name, user.Username),
+                new Claim("Email", user.Email)
+            };
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["AppSettings:Token"]!));
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512);
+
+            var token = new JwtSecurityToken(
+                issuer: _configuration["AppSettings:Issuer"],
+                audience: _configuration["AppSettings:Audience"],
+                claims: claims,
+                expires: DateTime.Now.AddMinutes(expiresInMinutes),
+                signingCredentials: creds);
+
+            return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+
+        public async Task<bool> ResetPasswordAsync(string token, string newPassword)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.UTF8.GetBytes(_configuration["AppSettings:Token"]!);
+
+            try
+            {
+                var principal = tokenHandler.ValidateToken(token, new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidIssuer = _configuration["AppSettings:Issuer"],
+                    ValidAudience = _configuration["AppSettings:Audience"],
+                    ClockSkew = TimeSpan.Zero // no buffer
+                }, out SecurityToken validatedToken);
+
+                var userId = principal.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                if (string.IsNullOrEmpty(userId)) return false;
+
+                var user = await _reBottleContext.Users.FirstOrDefaultAsync(u => u.UserId.ToString() == userId);
+                if (user == null) return false;
+
+                var hashedPassword = new PasswordHasher<User>().HashPassword(user, newPassword);
+                user.Password = hashedPassword;
+                user.Updated = DateTime.Now;
+
+                await _reBottleContext.SaveChangesAsync();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+
+
     }
 }
