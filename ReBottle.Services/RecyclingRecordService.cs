@@ -18,19 +18,23 @@ namespace ReBottle.Services
         private readonly IUserRepository _userRepository;
         private readonly ILocationRepository _locationRepository;
         private readonly IOrderStatusRepository _orderStatusRepository;
+        private readonly IImagesRepository _imageRepository;
         private readonly IMapper _mapper;
 
         public RecyclingRecordService(IRecyclingRecordRepository recyclingRecordRepository, 
             IMapper mapper, 
             IUserRepository userRepository,
             ILocationRepository locationRepository,
-            IOrderStatusRepository orderStatusRepository)
+            IOrderStatusRepository orderStatusRepository,
+            IImagesRepository imageRepository
+            )
         {
             _recyclingRecordRepository = recyclingRecordRepository;
             _mapper = mapper;
             _userRepository = userRepository;
             _locationRepository = locationRepository;
             _orderStatusRepository = orderStatusRepository;
+            _imageRepository = imageRepository;
         }
 
         public async Task<IEnumerable<RecyclingRecordDTO>> GetAllRecyclingRecordsAsync()
@@ -51,6 +55,7 @@ namespace ReBottle.Services
             var user = await _userRepository.GetUserByIdAsync(id);
             var location = await _locationRepository.GetLocationByIdAsync(request.LocationId);
             var orderStatus = await _orderStatusRepository.GetOrderStatusByIdAsync(request.OrderStatusId);
+            var image = await _imageRepository.GetImageByIdAsync(request.ImageId);
 
             var recyclingRecord = new RecyclingRecord
             {
@@ -58,11 +63,13 @@ namespace ReBottle.Services
                 UserId = user!.UserId,
                 LocationId = location!.LocationId,
                 OrderStatusId = orderStatus.OrderStatusId,
-                Amount = request.Amount,
-                MoneySaved = (float)(request.Amount * 0.5),
+                Amount = request.MoneySaved * 2,
+                MoneySaved = request.MoneySaved,
                 Method = request.Method,
                 Date = request.Date,
                 Created = DateTime.Now,
+                ImageId = image!.Id
+
             };
 
             await _recyclingRecordRepository.AddRecyclingRecordAsync(recyclingRecord);
@@ -70,7 +77,7 @@ namespace ReBottle.Services
             return recyclingRecord.RecyclingRecordId;
         }
 
-
+        
         public async Task DeleteRecyclingRecordAsync(Guid id)
         {
             await _recyclingRecordRepository.DeleteRecyclingRecordAsync(id);

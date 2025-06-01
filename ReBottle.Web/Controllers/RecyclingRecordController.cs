@@ -8,17 +8,19 @@ using ReBottle.Services;
 
 namespace ReBottle.Web.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class RecyclingRecordController : ControllerBase
     {
         private readonly IRecyclingRecordService _recyclingRecordService;
+        private readonly IImageService _imageService;
         private readonly IMapper _mapper;
 
-        public RecyclingRecordController(IRecyclingRecordService recyclingRecordService)
+        public RecyclingRecordController(IRecyclingRecordService recyclingRecordService, IImageService imageService)
         {
             _recyclingRecordService = recyclingRecordService;
+            _imageService = imageService;
         }
 
         [HttpGet]
@@ -53,7 +55,6 @@ namespace ReBottle.Web.Controllers
             return Ok(new { recyclingRecordId = newRecordId });
 
         }
-
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteRecyclingRecord([FromRoute] Guid id)

@@ -9,7 +9,7 @@ namespace ReBottle.Models.DTOs
     public class MonthlyReportDTO
     {
         public string Month { get; set; } = string.Empty;
-        public int TotalBottles { get; set; }
+        public float TotalBottles { get; set; }
     }
 
 }

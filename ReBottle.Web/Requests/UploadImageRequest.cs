@@ -12,8 +12,5 @@ namespace ReBottle.Web.Requests
         [Required]
         [FromForm(Name = "userId")]
         public Guid UserId { get; set; }
-
-        [FromForm(Name = "recyclingRecordId")]
-        public Guid RecyclingRecordId { get; set; }
     }
 }

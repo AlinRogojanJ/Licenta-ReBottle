@@ -23,8 +23,12 @@ namespace ReBottle.Models
 
         [ForeignKey("OrderStatusId")] [Required] [NotNull]
         public Guid OrderStatusId { get; set; }
+        [ForeignKey("ImageId")]
+        [Required]
+        [NotNull]
+        public Guid ImageId { get; set; }
 
-        public int Amount { get; set; }
+        public float Amount { get; set; }
 
         public float MoneySaved { get; set; }
 

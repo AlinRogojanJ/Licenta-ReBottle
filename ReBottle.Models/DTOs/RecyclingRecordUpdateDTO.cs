@@ -11,7 +11,8 @@ namespace ReBottle.Models.DTOs
         public Guid UserId { get; set; }
         public Guid LocationId { get; set; }
         public Guid OrderStatusId { get; set; }
-        public int Amount { get; set; }
+        public Guid ImageId { get; set; }
+        public float MoneySaved { get; set; }
         public string Method { get; set; }
         public DateTime Date { get; set; }
     }
