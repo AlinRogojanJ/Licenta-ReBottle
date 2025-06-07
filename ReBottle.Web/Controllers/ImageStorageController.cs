@@ -115,6 +115,16 @@ namespace ReBottle.Web.Controllers
             var locationId = Guid.Parse("E9AA66E2-2179-4AAF-A558-0C39BE1581F3");
             var orderStatusId = Guid.Parse("C2E40075-6013-4F0D-81FA-A449C0426462");
             var method = "scan";
+            float moneySaved = 0;
+
+            if (float.TryParse(ocrObject.total_price, NumberStyles.Float, CultureInfo.InvariantCulture, out var parsed))
+            {
+                moneySaved = parsed;
+            }
+            else
+            {
+                Console.WriteLine($"⚠️ Warning: Failed to parse total_price as float: '{ocrObject.total_price}'");
+            }
 
             var recycleDto = new RecyclingRecordUpdateDTO
             {
@@ -122,7 +132,7 @@ namespace ReBottle.Web.Controllers
                 LocationId = locationId,
                 OrderStatusId = orderStatusId,
                 ImageId = img.Id,
-                MoneySaved = float.Parse(ocrObject.total_price, CultureInfo.InvariantCulture),
+                MoneySaved = moneySaved,
                 Method = method,
                 Date = parsedDate
             };

@@ -51,7 +51,6 @@ namespace ReBottle.Web.Controllers
             var newRecordId = await _recyclingRecordService
                 .AddRecyclingRecordAsync(id, request);
 
-            // return 201 Created with the new ID in the body
             return Ok(new { recyclingRecordId = newRecordId });
 
         }

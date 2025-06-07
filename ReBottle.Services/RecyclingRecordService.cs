@@ -54,7 +54,8 @@ namespace ReBottle.Services
         {
             var user = await _userRepository.GetUserByIdAsync(id);
             var location = await _locationRepository.GetLocationByIdAsync(request.LocationId);
-            var orderStatus = await _orderStatusRepository.GetOrderStatusByIdAsync(request.OrderStatusId);
+            //var orderStatus = await _orderStatusRepository.GetOrderStatusByIdAsync(request.OrderStatusId);
+            var order = new Guid("C2E40075-6013-4F0D-81FA-A449C0426462");
             var image = await _imageRepository.GetImageByIdAsync(request.ImageId);
 
             var recyclingRecord = new RecyclingRecord
@@ -62,7 +63,7 @@ namespace ReBottle.Services
                 RecyclingRecordId = Guid.NewGuid(),
                 UserId = user!.UserId,
                 LocationId = location!.LocationId,
-                OrderStatusId = orderStatus.OrderStatusId,
+                OrderStatusId = order,
                 Amount = request.MoneySaved * 2,
                 MoneySaved = request.MoneySaved,
                 Method = request.Method,
